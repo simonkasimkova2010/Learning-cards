@@ -7,12 +7,7 @@ function load() {
     const d = JSON.parse(localStorage.getItem(KEY));
     if (d && d.words) return d;
   } catch (e) {}
-  const starter = [['pes', 'dog'], ['kočka', 'cat'], ['dům', 'house'], ['voda', 'water'], ['kniha', 'book'], ['škola', 'school']];
-  return {
-    words: starter.map(([cz, en], i) => ({ id: i + 1, cz, en, lvl: 0, ok: 0, bad: 0 })),
-    log: {},
-    dir: 'cz-en'
-  };
+  return { words: [], log: {}, dir: 'cz-en' };
 }
 let S = load();
 const save = () => localStorage.setItem(KEY, JSON.stringify(S));
@@ -90,6 +85,11 @@ function home() {
       <button class="chip ${S.dir === 'cz-en' ? 'on' : ''}" data-a="dir" data-v="cz-en">CZ → EN</button>
       <button class="chip ${S.dir === 'en-cz' ? 'on' : ''}" data-a="dir" data-v="en-cz">EN → CZ</button>
     </div>
+    ${st.total === 0 ? `
+      <div class="box" style="margin:0 0 14px">
+        <p>Zatím tu nemáš žádná slovíčka. Napiš si ta, která se chceš naučit, a hned si je procvičíš.</p>
+        <button class="btn full" data-a="go" data-v="words">Přidat první slova</button>
+      </div>` : ''}
     ${msg ? `<p class="feedback wrong">${msg}</p>` : ''}
     <div class="grid">
       <button class="tile lav" data-a="start" data-v="cards"><i>↗</i><span>Kartičky</span><small>otoč a ohodnoť se</small></button>
@@ -117,7 +117,8 @@ function words() {
           <span><b>${esc(w.cz)}</b> &nbsp;·&nbsp; ${esc(w.en)}</span>
           <button class="x" data-a="del" data-v="${w.id}" aria-label="Smazat">✕</button>
         </div>`).join('') : '<p class="muted">Zatím tu nic není.</p>'}
-    </div>`;
+    </div>
+    ${S.words.length ? '<button class="btn ghost full" data-a="clear">Smazat všechna slova</button>' : ''}`;
 }
 
 function progress() {
@@ -262,6 +263,13 @@ document.addEventListener('click', e => {
       S.words = S.words.filter(w => String(w.id) !== v);
       save();
       render();
+      break;
+    case 'clear':
+      if (confirm('Opravdu smazat všechna slovíčka?')) {
+        S.words = [];
+        save();
+        render();
+      }
       break;
   }
 });
