@@ -22,10 +22,18 @@ body{
 .blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.45;z-index:0;pointer-events:none}
 .b1{width:320px;height:320px;background:#7b5cff;top:-120px;left:-100px}
 .b2{width:280px;height:280px;background:#ff9acb;bottom:-100px;right:-120px;opacity:.3}
+.brand{
+  position:relative;z-index:1;
+  max-width:480px;margin:0 auto;
+  padding:calc(env(safe-area-inset-top,0px) + 20px) 20px 0;
+  display:flex;align-items:center;gap:10px;
+  font-weight:600;font-size:1.2rem;
+}
+.brand img{border-radius:11px;display:block}
 main{
   position:relative;z-index:1;
   max-width:480px;margin:0 auto;
-  padding:calc(env(safe-area-inset-top,0px) + 24px) 20px 130px;
+  padding:8px 20px 130px;
 }
 h1{font-size:2.3rem;line-height:1.1;font-weight:300;margin:28px 0 22px}
 h1 b,h2 b{font-weight:600}
